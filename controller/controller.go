@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/ThailanTec/jwt/model"
@@ -8,6 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Login on app
+// @ID Post
+// @Produce json
+// @Success 201
+// @Failure 500
+// @Param model.User
+// @Router /login [post]
 func LoginHandler(c *gin.Context) {
 	var user model.User
 	if err := c.BindJSON(&user); err != nil {
@@ -24,6 +32,7 @@ func LoginHandler(c *gin.Context) {
 
 	// Gera token JWT
 	token, err := pkg.GenerateToken(user)
+	fmt.Println(err)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao gerar token"})
 		return
